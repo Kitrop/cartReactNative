@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-export default function ProductCard({ product, addToCart, addToFavorites }) {
+export default function ProductCard({ product, addToCart, toggleFavorite }) {
   return (
     <View style={styles.card}>
       <Text style={styles.title}>{product.name}</Text>
@@ -16,7 +16,7 @@ export default function ProductCard({ product, addToCart, addToFavorites }) {
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.button, { backgroundColor: '#ff9800' }]}
-          onPress={() => addToFavorites(product)}
+          onPress={() => toggleFavorite(product)}
         >
           <Text style={styles.buttonText}>Add to Favorites</Text>
         </TouchableOpacity>
