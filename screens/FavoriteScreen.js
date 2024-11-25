@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, FlatList, StyleSheet, Text } from 'react-native';
 
-export default function CartScreen({ route }) {
-  const { cart } = route.params;
+export default function FavoritesScreen({ route }) {
+  const { favorites } = route.params;
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={cart}
+        data={favorites}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.item}>
