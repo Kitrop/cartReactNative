@@ -2,7 +2,15 @@ import React from 'react';
 import { View, FlatList, StyleSheet, Text } from 'react-native';
 
 export default function FavoritesScreen({ route }) {
-  const { favorites } = route.params;
+  const [favorites, setFavorites] = useState([]);
+
+  useEffect(() => {
+    const loadFavorites = async () => {
+      const storedFavorites = await getData('favorites');
+      if (storedFavorites) setFavorites(storedFavorites);
+    };
+    loadFavorites();
+  }, []);
 
   return (
     <View style={styles.container}>

@@ -10,24 +10,33 @@ import {
 } from 'react-native';
 
 export default function CartScreen({ route }) {
-  const { cart } = route.params;
-
   const [cartItems, setCartItems] = useState([]);
   const [promoCode, setPromoCode] = useState('');
   const [discount, setDiscount] = useState(0);
 
   useEffect(() => {
-    const groupedItems = cart.reduce((acc, item) => {
-      const existingItem = acc.find((i) => i.id === item.id);
-      if (existingItem) {
-        existingItem.quantity += 1;
-      } else {
-        acc.push({ ...item, quantity: 1 });
+    const loadCart = async () => {
+      const storedCart = await getData('cart');
+      if (storedCart) {
+        const groupedItems = cart.reduce((acc, item) => {
+          const existingItem = acc.find((i) => i.id === item.id);
+          if (existingItem) {
+            existingItem.quantity += 1;
+          } else {
+            acc.push({ ...item, quantity: 1 });
+          }
+          return acc;
+        }, []);
+        setCartItems(groupedItems);
       }
-      return acc;
-    }, []);
-    setCartItems(groupedItems);
-  }, [cart]);
+    };
+    loadCart();
+  }, []);
+  
+  useEffect(() => {
+    const saveCart = async () => await saveData('cart', cartItems);
+    saveCart();
+  }, [cartItems]);
 
   const calculateTotal = () => {
     const total = cartItems.reduce(
@@ -36,7 +45,7 @@ export default function CartScreen({ route }) {
     );
     return (total * (1 - discount)).toFixed(2);
   };
-  
+
   const applyPromoCode = () => {
     if (promoCode === 'DISCOUNT10') {
       setDiscount(0.1);
