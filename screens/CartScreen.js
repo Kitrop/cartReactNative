@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  FlatList,
-  StyleSheet,
-  Text,
-  TextInput,
-  Button,
-  Alert,
-} from 'react-native';
-import { getData } from '../utils/storage';
+import { View, FlatList, StyleSheet, Text, Button, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CartScreen({ route }) {
   const [cartItems, setCartItems] = useState([]);
@@ -16,26 +8,27 @@ export default function CartScreen({ route }) {
   const [discount, setDiscount] = useState(0);
 
   useEffect(() => {
-    const loadCart = async () => {
-      const storedCart = await getData('cart');
-      if (storedCart) {
-        const groupedItems = cart.reduce((acc, item) => {
-          const existingItem = acc.find((i) => i.id === item.id);
-          if (existingItem) {
-            existingItem.quantity += 1;
-          } else {
-            acc.push({ ...item, quantity: 1 });
-          }
-          return acc;
-        }, []);
-        setCartItems(groupedItems);
+    async function loadCart() {
+      try {
+        const savedCart = await AsyncStorage.getItem('cart');
+        if (savedCart) {
+          setCartItems(JSON.parse(savedCart));
+        }
+      } catch (error) {
+        console.error('Failed to load cart', error);
       }
-    };
+    }
     loadCart();
   }, []);
-  
+
   useEffect(() => {
-    const saveCart = async () => await saveData('cart', cartItems);
+    async function saveCart() {
+      try {
+        await AsyncStorage.setItem('cart', JSON.stringify(cartItems));
+      } catch (error) {
+        console.error('Failed to save cart', error);
+      }
+    }
     saveCart();
   }, [cartItems]);
 

@@ -1,17 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { View, FlatList, StyleSheet, Text } from 'react-native';
-import { getData } from '../utils/storage';
 
 export default function FavoritesScreen({ route }) {
-  const [favorites, setFavorites] = useState([]);
-
-  useEffect(() => {
-    const loadFavorites = async () => {
-      const storedFavorites = await getData('favorites');
-      if (storedFavorites) setFavorites(storedFavorites);
-    };
-    loadFavorites();
-  }, []);
+  const { favorites } = route.params;
 
   return (
     <View style={styles.container}>
