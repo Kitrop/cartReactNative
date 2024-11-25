@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
-import { View, FlatList, StyleSheet, Button, Text, TouchableOpacity } from 'react-native'
-import ProductCard from '../components/ProductCard'
+import React, { useState, useEffect } from 'react';
+import { View, FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import ProductCard from '../components/ProductCard';
+import { saveData, getData } from '../utils/storage';
+
 
 export default function ProductScreen({ navigation }) {
   const [products] = useState([

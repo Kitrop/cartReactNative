@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, FlatList, StyleSheet, Text } from 'react-native';
+import { getData } from '../utils/storage';
 
 export default function FavoritesScreen({ route }) {
   const [favorites, setFavorites] = useState([]);

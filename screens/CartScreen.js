@@ -8,6 +8,7 @@ import {
   Button,
   Alert,
 } from 'react-native';
+import { getData } from '../utils/storage';
 
 export default function CartScreen({ route }) {
   const [cartItems, setCartItems] = useState([]);
