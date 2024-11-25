@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, StyleSheet, Text, Button, Alert } from 'react-native';
+import { View, FlatList, StyleSheet, Text, Button, Alert, TextInput } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CartScreen({ route }) {
