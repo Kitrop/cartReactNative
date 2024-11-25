@@ -36,7 +36,7 @@ export default function CartScreen({ route }) {
     );
     return (total * (1 - discount)).toFixed(2);
   };
-
+  
   const applyPromoCode = () => {
     if (promoCode === 'DISCOUNT10') {
       setDiscount(0.1);
