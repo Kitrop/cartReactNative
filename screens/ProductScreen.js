@@ -26,26 +26,20 @@ export default function ProductScreen({ navigation }) {
     loadData();
   }, []);
 
-  useEffect(() => {
-    async function saveCart() {
-      try {
-        await AsyncStorage.setItem('cart', JSON.stringify(cart));
-      } catch (error) {
-        console.error('Failed to save cart', error);
-      }
+  const saveData = async (key, data) => {
+    try {
+      await AsyncStorage.setItem(key, JSON.stringify(data));
+    } catch (error) {
+      console.error(`Failed to save ${key}`, error);
     }
-    saveCart();
+  };
+
+  useEffect(() => {
+    saveData('cart', cart);
   }, [cart]);
 
   useEffect(() => {
-    async function saveFavorites() {
-      try {
-        await AsyncStorage.setItem('favorites', JSON.stringify(favorites));
-      } catch (error) {
-        console.error('Failed to save favorites', error);
-      }
-    }
-    saveFavorites();
+    saveData('favorites', favorites);
   }, [favorites]);
 
   const addToCart = (product) => {
@@ -64,6 +58,11 @@ export default function ProductScreen({ navigation }) {
   };
 
   const toggleFavorite = (product) => {
+    if (!product.id) {
+      console.error('Product must have an id');
+      return;
+    }
+
     const isFavorite = favorites.some((item) => item.id === product.id);
     if (isFavorite) {
       setFavorites((prev) => prev.filter((item) => item.id !== product.id));
