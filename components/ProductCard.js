@@ -12,13 +12,13 @@ export default function ProductCard({ product, addToCart, toggleFavorite }) {
           style={styles.button}
           onPress={() => addToCart(product)}
         >
-          <Text style={styles.buttonText}>Add to Cart</Text>
+          <Text style={styles.buttonText}>В коризину</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.button, { backgroundColor: '#ff9800' }]}
           onPress={() => toggleFavorite(product)}
         >
-          <Text style={styles.buttonText}>Add to Favorites</Text>
+          <Text style={styles.buttonText}>В избранное</Text>
         </TouchableOpacity>
       </View>
     </View>

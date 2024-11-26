@@ -15,7 +15,7 @@ export default function CartScreen({ route }) {
           setCartItems(JSON.parse(savedCart));
         }
       } catch (error) {
-        console.error('Failed to load cart', error);
+        console.error('Ошибка загрузки корзины', error);
       }
     }
     loadCart();
@@ -26,7 +26,7 @@ export default function CartScreen({ route }) {
       try {
         await AsyncStorage.setItem('cart', JSON.stringify(cartItems));
       } catch (error) {
-        console.error('Failed to save cart', error);
+        console.error('Ошибка загрузки корзины', error);
       }
     }
     saveCart();
@@ -41,12 +41,12 @@ export default function CartScreen({ route }) {
   };
 
   const applyPromoCode = () => {
-    if (promoCode === 'DISCOUNT10') {
+    if (promoCode === 'DIS10') {
       setDiscount(0.1);
-      Alert.alert('Promo Code Applied', 'You received a 10% discount!');
+      Alert.alert('Промокод активен', 'Твоя скидка 10%!');
     } else {
       setDiscount(0);
-      Alert.alert('Invalid Promo Code', 'Please try again.');
+      Alert.alert('Неверный промокод', 'Попробуйте еще');
     }
   };
 
@@ -75,11 +75,11 @@ export default function CartScreen({ route }) {
       <View style={styles.promoContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Enter promo code"
+          placeholder="Введите промокод здесь"
           value={promoCode}
           onChangeText={setPromoCode}
         />
-        <Button title="Apply Promo Code" onPress={applyPromoCode} />
+        <Button title="Применить промокод" onPress={applyPromoCode} />
       </View>
       <View style={styles.summary}>
         <Text style={styles.total}>Total: ${calculateTotal()}</Text>

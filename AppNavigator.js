@@ -9,9 +9,9 @@ const Stack = createStackNavigator();
 export default function AppNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerStyle: { backgroundColor: '#6200ee' }, headerTintColor: '#fff' }}>
-      <Stack.Screen name="Products" component={ProductScreen} options={{ title: 'Products' }} />
-      <Stack.Screen name="Cart" component={CartScreen} options={{ title: 'Your Cart' }} />
-      <Stack.Screen name="Favorites" component={FavoritesScreen} options={{ title: 'Favorites' }} />
+      <Stack.Screen name="Products" component={ProductScreen} options={{ title: 'Товары' }} />
+      <Stack.Screen name="Cart" component={CartScreen} options={{ title: 'Корзина' }} />
+      <Stack.Screen name="Favorites" component={FavoritesScreen} options={{ title: 'Избранное' }} />
     </Stack.Navigator>
   );
 }
