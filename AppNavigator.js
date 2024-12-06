@@ -1,17 +1,23 @@
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import ProductScreen from './screens/ProductScreen';
-import CartScreen from './screens/CartScreen';
-import FavoritesScreen from './screens/FavoritesScreen';
+import {createStackNavigator} from "@react-navigation/native/src/__stubs__/createStackNavigator";
+import ProductListScreen from "./screens/ProductListScreen";
+import ShoppingCartScreen from "./screens/ShoppingCartScreen";
+import FavoritesScreen from "./screens/FavoriteScreen";
+
 
 const Stack = createStackNavigator();
 
 export default function AppNavigator() {
   return (
-    <Stack.Navigator screenOptions={{ headerStyle: { backgroundColor: '#6200ee' }, headerTintColor: '#fff' }}>
-      <Stack.Screen name="Products" component={ProductScreen} options={{ title: 'Products' }} />
-      <Stack.Screen name="Cart" component={CartScreen} options={{ title: 'Your Cart' }} />
-      <Stack.Screen name="Favorites" component={FavoritesScreen} options={{ title: 'Favorites' }} />
+    <Stack.Navigator
+      screenOptions={{ headerStyle: { backgroundColor: '#6200ee' }, headerTintColor: '#fff' }}
+     id={'1'}>
+      <Stack.Screen name="Products" component={ProductListScreen} options={{ title: 'Products' }} />
+      <Stack.Screen
+        name="ShoppingCart"
+        component={ShoppingCartScreen}
+        options={{ title: 'Shopping Cart' }}
+      />
+      <Stack.Screen name="WishList" component={FavoritesScreen} options={{ title: 'Wish List' }} />
     </Stack.Navigator>
   );
 }
