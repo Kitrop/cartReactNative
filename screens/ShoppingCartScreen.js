@@ -1,17 +1,31 @@
-import React, { useEffect, useState } from 'react'
-import { View, FlatList, Text, StyleSheet, Button, TextInput, Alert } from 'react-native'
-import { createOrder } from '../services/orderService'
+import React, { useEffect, useState } from 'react';
+import {
+  View,
+  FlatList,
+  Text,
+  StyleSheet,
+  Button,
+  TextInput,
+  Alert,
+  Platform,
+} from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { createOrder } from '../services/orderService';
+import { YMaps, Map, Placemark } from 'react-yandex-maps';
 
 const PROMO_CODES = {
-  "DISCOUNT10": 0.1, // 10% скидка
-  "SAVE20": 0.2,     // 20% скидка
-}
+  "DISCOUNT10": 0.1,
+  "SAVE20": 0.2,
+};
 
 export default function ShoppingCartScreen({ route, navigation }) {
-  const { shoppingCart } = route.params || []
-  const [cartItems, setCartItems] = useState(shoppingCart)
-  const [promoCode, setPromoCode] = useState('')
-  const [discount, setDiscount] = useState(0)
+  const { shoppingCart } = route.params || [];
+  const [cartItems, setCartItems] = useState(shoppingCart);
+  const [promoCode, setPromoCode] = useState('');
+  const [discount, setDiscount] = useState(0);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [deliveryLocation, setDeliveryLocation] = useState([55.751244, 37.618423]);
 
   const updateQuantity = (productId, change) => {
     setCartItems((prevCart) =>
@@ -22,19 +36,18 @@ export default function ShoppingCartScreen({ route, navigation }) {
             : item
         )
         .filter((item) => item.quantity > 0)
-    )
-  }
+    );
+  };
 
   const getTotalPrice = () =>
-    cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) * (1 - discount)
+    cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) * (1 - discount);
 
   const handleCheckout = async () => {
-    console.log("test knopka")
     try {
       const order = {
-        description: cartItems
-          .map((item) => `${item.name} (x${item.quantity})`)
-          .join(', '),
+        description: cartItems.map((item) => `${item.name} (x${item.quantity})`).join(', '),
+        deliveryDate: selectedDate.toISOString(),
+        deliveryLocation,
       };
       const result = await createOrder(order);
       Alert.alert('Order Created', `Your order ID: ${result.order_id}`);
@@ -42,16 +55,16 @@ export default function ShoppingCartScreen({ route, navigation }) {
     } catch (error) {
       Alert.alert('Error', 'Failed to create order.');
     }
-  }
+  };
 
   const applyPromoCode = () => {
     if (PROMO_CODES[promoCode]) {
-      setDiscount(PROMO_CODES[promoCode])
-      Alert.alert("Success", `Promo code applied! Discount: ${PROMO_CODES[promoCode] * 100}%`)
+      setDiscount(PROMO_CODES[promoCode]);
+      Alert.alert('Success', `Promo code applied! Discount: ${PROMO_CODES[promoCode] * 100}%`);
     } else {
-      Alert.alert("Error", "Invalid promo code.")
+      Alert.alert('Error', 'Invalid promo code.');
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -64,16 +77,8 @@ export default function ShoppingCartScreen({ route, navigation }) {
             <Text style={styles.price}>${item.price}</Text>
             <Text style={styles.quantity}>Qty: {item.quantity}</Text>
             <View style={styles.actions}>
-              <Button
-                title="+"
-                onPress={() => updateQuantity(item.id, 1)}
-                color="#4caf50"
-              />
-              <Button
-                title="-"
-                onPress={() => updateQuantity(item.id, -1)}
-                color="#ff4081"
-              />
+              <Button title="+" onPress={() => updateQuantity(item.id, 1)} color="#4caf50" />
+              <Button title="-" onPress={() => updateQuantity(item.id, -1)} color="#ff4081" />
             </View>
           </View>
         )}
@@ -90,15 +95,47 @@ export default function ShoppingCartScreen({ route, navigation }) {
       <Text style={styles.total}>
         Total: ${getTotalPrice().toFixed(2)} {discount > 0 && `(Discount: ${discount * 100}%)`}
       </Text>
-      <Button
-          title="Сделать заказ"
-          onPress={handleCheckout}
-          color="#4caf50"
-        />
 
+      {/* Выбор даты */}
+      <View style={styles.dateSection}>
+        <Text style={styles.label}>Select Delivery Date:</Text>
+        <Button
+          title={selectedDate.toLocaleDateString()}
+          onPress={() => setShowDatePicker(true)}
+          color="#6200ee"
+        />
+        {showDatePicker && (
+          <DateTimePicker
+            value={selectedDate}
+            mode="date"
+            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+            onChange={(event, date) => {
+              setShowDatePicker(false);
+              if (date) setSelectedDate(date);
+            }}
+          />
+        )}
+      </View>
+
+      {/* Интеграция с Yandex.Maps */}
+      <View style={styles.mapSection}>
+        <Text style={styles.label}>Select Delivery Location:</Text>
+        <YMaps>
+          <Map
+            defaultState={{ center: deliveryLocation, zoom: 10 }}
+            width="100%"
+            height={200}
+            onClick={(e) => setDeliveryLocation(e.get('coords'))}
+          >
+            <Placemark geometry={deliveryLocation} />
+          </Map>
+        </YMaps>
+      </View>
+
+      <Button title="Place Order" onPress={handleCheckout} color="#4caf50" />
       <Button title="Back" onPress={() => navigation.goBack()} color="#757575" />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -155,4 +192,15 @@ const styles = StyleSheet.create({
     color: '#333',
     marginTop: 20,
   },
-})
+  dateSection: {
+    marginVertical: 20,
+  },
+  label: {
+    fontSize: 16,
+    marginBottom: 8,
+    color: '#333',
+  },
+  mapSection: {
+    marginVertical: 20,
+  },
+});
