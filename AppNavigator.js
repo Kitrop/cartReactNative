@@ -2,6 +2,7 @@ import { createStackNavigator } from "@react-navigation/native/src/__stubs__/cre
 import ProductListScreen from "./screens/ProductListScreen"
 import ShoppingCartScreen from "./screens/ShoppingCartScreen"
 import FavoritesScreen from "./screens/FavoriteScreen"
+import OrderHistoryScreen from "./screens/OrderHistoryScreen"
 
 
 const Stack = createStackNavigator()

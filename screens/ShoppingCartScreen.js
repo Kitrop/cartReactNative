@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, FlatList, Text, StyleSheet, Button, TextInput, Alert } from 'react-native'
+import { createOrder } from '../services/orderService'
 
 const PROMO_CODES = {
   "DISCOUNT10": 0.1, // 10% скидка
@@ -28,6 +29,7 @@ export default function ShoppingCartScreen({ route, navigation }) {
     cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) * (1 - discount)
 
   const handleCheckout = async () => {
+    console.log("test knopka")
     try {
       const order = {
         description: cartItems
@@ -83,21 +85,17 @@ export default function ShoppingCartScreen({ route, navigation }) {
           value={promoCode}
           onChangeText={setPromoCode}
         />
-        <Button
-          title="Checkout"
-          onPress={handleCheckout}
-          color="#4caf50"
-        />
         <Button title="Apply" onPress={applyPromoCode} color="#4caf50" />
       </View>
       <Text style={styles.total}>
         Total: ${getTotalPrice().toFixed(2)} {discount > 0 && `(Discount: ${discount * 100}%)`}
       </Text>
       <Button
-        title="Checkout"
-        onPress={() => alert('Checkout process initiated!')}
-        color="#4caf50"
-      />
+          title="Сделать заказ"
+          onPress={handleCheckout}
+          color="#4caf50"
+        />
+
       <Button title="Back" onPress={() => navigation.goBack()} color="#757575" />
     </View>
   )
