@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, FlatList, Text, StyleSheet, Button, TextInput, Alert } from 'react-native';
+import React, { useState } from 'react'
+import { View, FlatList, Text, StyleSheet, Button, TextInput, Alert } from 'react-native'
 
 const PROMO_CODES = {
   "DISCOUNT10": 0.1, // 10% скидка
@@ -7,10 +7,10 @@ const PROMO_CODES = {
 }
 
 export default function ShoppingCartScreen({ route, navigation }) {
-  const { shoppingCart } = route.params || [];
-  const [cartItems, setCartItems] = useState(shoppingCart);
-  const [promoCode, setPromoCode] = useState('');
-  const [discount, setDiscount] = useState(0);
+  const { shoppingCart } = route.params || []
+  const [cartItems, setCartItems] = useState(shoppingCart)
+  const [promoCode, setPromoCode] = useState('')
+  const [discount, setDiscount] = useState(0)
 
   const updateQuantity = (productId, change) => {
     setCartItems((prevCart) =>
@@ -21,20 +21,35 @@ export default function ShoppingCartScreen({ route, navigation }) {
             : item
         )
         .filter((item) => item.quantity > 0)
-    );
-  };
+    )
+  }
 
   const getTotalPrice = () =>
-    cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) * (1 - discount);
+    cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) * (1 - discount)
+
+  const handleCheckout = async () => {
+    try {
+      const order = {
+        description: cartItems
+          .map((item) => `${item.name} (x${item.quantity})`)
+          .join(', '),
+      };
+      const result = await createOrder(order);
+      Alert.alert('Order Created', `Your order ID: ${result.order_id}`);
+      setCartItems([]);
+    } catch (error) {
+      Alert.alert('Error', 'Failed to create order.');
+    }
+  }
 
   const applyPromoCode = () => {
     if (PROMO_CODES[promoCode]) {
-      setDiscount(PROMO_CODES[promoCode]);
-      Alert.alert("Success", `Promo code applied! Discount: ${PROMO_CODES[promoCode] * 100}%`);
+      setDiscount(PROMO_CODES[promoCode])
+      Alert.alert("Success", `Promo code applied! Discount: ${PROMO_CODES[promoCode] * 100}%`)
     } else {
-      Alert.alert("Error", "Invalid promo code.");
+      Alert.alert("Error", "Invalid promo code.")
     }
-  };
+  }
 
   return (
     <View style={styles.container}>
@@ -68,6 +83,11 @@ export default function ShoppingCartScreen({ route, navigation }) {
           value={promoCode}
           onChangeText={setPromoCode}
         />
+        <Button
+          title="Checkout"
+          onPress={handleCheckout}
+          color="#4caf50"
+        />
         <Button title="Apply" onPress={applyPromoCode} color="#4caf50" />
       </View>
       <Text style={styles.total}>
@@ -80,7 +100,7 @@ export default function ShoppingCartScreen({ route, navigation }) {
       />
       <Button title="Back" onPress={() => navigation.goBack()} color="#757575" />
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -137,4 +157,4 @@ const styles = StyleSheet.create({
     color: '#333',
     marginTop: 20,
   },
-});
+})
