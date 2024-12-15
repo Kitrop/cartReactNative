@@ -4,7 +4,7 @@ import {
   FlatList,
   Text,
   StyleSheet,
-  Button,
+  TouchableOpacity,
   TextInput,
   Alert,
   Platform,
@@ -81,12 +81,23 @@ export default function ShoppingCartScreen({ route, navigation }) {
             <Text style={styles.price}>${item.price}</Text>
             <Text style={styles.quantity}>Qty: {item.quantity}</Text>
             <View style={styles.actions}>
-              <Button title="+" onPress={() => updateQuantity(item.id, 1)} color="#4caf50" />
-              <Button title="-" onPress={() => updateQuantity(item.id, -1)} color="#ff4081" />
+              <TouchableOpacity
+                style={[styles.button, styles.increaseButton]}
+                onPress={() => updateQuantity(item.id, 1)}
+              >
+                <Text style={styles.buttonText}>+</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, styles.decreaseButton]}
+                onPress={() => updateQuantity(item.id, -1)}
+              >
+                <Text style={styles.buttonText}>-</Text>
+              </TouchableOpacity>
             </View>
           </View>
         )}
       />
+
       <View style={styles.promoSection}>
         <TextInput
           style={styles.promoInput}
@@ -94,13 +105,17 @@ export default function ShoppingCartScreen({ route, navigation }) {
           value={promoCode}
           onChangeText={setPromoCode}
         />
-        <Button title="Apply" onPress={applyPromoCode} color="#4caf50" />
+        <TouchableOpacity style={styles.applyButton} onPress={applyPromoCode}>
+          <Text style={styles.applyButtonText}>Apply</Text>
+        </TouchableOpacity>
       </View>
+
       <Text style={styles.total}>
-        Total: ${getTotalPrice().toFixed(2)} {discount > 0 && `(Discount: ${discount * 100}%)`}
+        Total: ${getTotalPrice().toFixed(2)}{' '}
+        {discount > 0 && `(Discount: ${discount * 100}%)`}
       </Text>
-            {/* Выбор даты */}
-            <View style={styles.dateSection}>
+
+      <View style={styles.dateSection}>
         <Text style={styles.label}>Select Delivery Date:</Text>
         {Platform.OS === 'web' ? (
           <input
@@ -111,11 +126,12 @@ export default function ShoppingCartScreen({ route, navigation }) {
           />
         ) : (
           <>
-            <Button
-              title={selectedDate.toLocaleDateString()}
+            <TouchableOpacity
+              style={styles.dateButton}
               onPress={() => setShowDatePicker(true)}
-              color="#6200ee"
-            />
+            >
+              <Text style={styles.dateButtonText}>{selectedDate.toLocaleDateString()}</Text>
+            </TouchableOpacity>
             {showDatePicker && (
               <DateTimePicker
                 value={selectedDate}
@@ -131,7 +147,6 @@ export default function ShoppingCartScreen({ route, navigation }) {
         )}
       </View>
 
-      {/* Интеграция с Yandex.Maps */}
       <View style={styles.mapSection}>
         <Text style={styles.label}>Select Delivery Location:</Text>
         <YMaps>
@@ -146,8 +161,12 @@ export default function ShoppingCartScreen({ route, navigation }) {
         </YMaps>
       </View>
 
-      <Button title="Place Order" onPress={handleCheckout} color="#4caf50" />
-      <Button title="Back" onPress={() => navigation.goBack()} color="#757575" />
+      <TouchableOpacity style={styles.checkoutButton} onPress={handleCheckout}>
+        <Text style={styles.checkoutButtonText}>Place Order</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <Text style={styles.backButtonText}>Back</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -187,6 +206,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  button: {
+    padding: 8,
+    borderRadius: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 40,
+  },
+  increaseButton: {
+    backgroundColor: '#4caf50',
+  },
+  decreaseButton: {
+    backgroundColor: '#ff4081',
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
   promoSection: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -199,6 +235,16 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 8,
     marginRight: 10,
+  },
+  applyButton: {
+    backgroundColor: '#4caf50',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+  },
+  applyButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
   total: {
     fontSize: 18,
@@ -220,7 +266,40 @@ const styles = StyleSheet.create({
     padding: 8,
     width: '100%',
   },
+  dateButton: {
+    backgroundColor: '#6200ee',
+    paddingVertical: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  dateButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
   mapSection: {
     marginVertical: 20,
+  },
+  checkoutButton: {
+    backgroundColor: '#4caf50',
+    paddingVertical: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  checkoutButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  backButton: {
+    backgroundColor: '#757575',
+    paddingVertical: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  backButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });

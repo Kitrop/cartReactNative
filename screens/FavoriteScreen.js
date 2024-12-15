@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, Text, StyleSheet, Button } from 'react-native';
+import { View, FlatList, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function WishListScreen({ navigation }) {
@@ -34,7 +34,9 @@ export default function WishListScreen({ navigation }) {
       ) : (
         <Text style={styles.empty}>Your wish list is empty!</Text>
       )}
-      <Button title="Back" onPress={() => navigation.goBack()} color="#757575" />
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <Text style={styles.backButtonText}>Back</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -42,7 +44,7 @@ export default function WishListScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f3f4f6',
+    backgroundColor: '#f9fafb',
     padding: 16,
   },
   wishItem: {
@@ -54,6 +56,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
+    elevation: 2,
   },
   name: {
     fontSize: 16,
@@ -74,5 +77,17 @@ const styles = StyleSheet.create({
     color: '#999',
     textAlign: 'center',
     marginTop: 20,
+  },
+  backButton: {
+    backgroundColor: '#4caf50',
+    padding: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  backButtonText: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: 'bold',
   },
 });
