@@ -14,8 +14,8 @@ import { createOrder } from '../services/orderService';
 import { YMaps, Map, Placemark } from 'react-yandex-maps';
 
 const PROMO_CODES = {
-  "DISCOUNT10": 0.1,
-  "SAVE20": 0.2,
+  DISCOUNT10: 0.1,
+  SAVE20: 0.2,
 };
 
 export default function ShoppingCartScreen({ route, navigation }) {
@@ -174,32 +174,32 @@ export default function ShoppingCartScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f3f4f6',
+    backgroundColor: '#E5E5E5',
     padding: 16,
   },
   cartItem: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#FFFFFF',
     marginBottom: 15,
     padding: 16,
-    borderRadius: 8,
+    borderRadius: 12,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
   name: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#222222',
   },
   price: {
-    fontSize: 14,
-    color: '#4caf50',
+    fontSize: 16,
+    color: '#4CAF50',
     marginTop: 4,
   },
   quantity: {
     fontSize: 14,
-    color: '#666',
+    color: '#666666',
     marginVertical: 8,
   },
   actions: {
@@ -207,20 +207,20 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   button: {
-    padding: 8,
-    borderRadius: 4,
+    padding: 10,
+    borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
     width: 40,
   },
   increaseButton: {
-    backgroundColor: '#4caf50',
+    backgroundColor: '#6200EE',
   },
   decreaseButton: {
-    backgroundColor: '#ff4081',
+    backgroundColor: '#E53935',
   },
   buttonText: {
-    color: '#fff',
+    color: '#FFFFFF',
     fontWeight: 'bold',
   },
   promoSection: {
@@ -231,25 +231,25 @@ const styles = StyleSheet.create({
   promoInput: {
     flex: 1,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: '#CCCCCC',
     borderRadius: 8,
-    paddingHorizontal: 8,
+    paddingHorizontal: 12,
     marginRight: 10,
   },
   applyButton: {
-    backgroundColor: '#4caf50',
+    backgroundColor: '#FF5722',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 8,
   },
   applyButtonText: {
-    color: '#fff',
+    color: '#FFFFFF',
     fontWeight: 'bold',
   },
   total: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#333333',
     marginTop: 20,
   },
   dateSection: {
@@ -258,38 +258,38 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     marginBottom: 8,
-    color: '#333',
+    color: '#333333',
   },
   webDatePicker: {
-    border: '1px solid #ccc',
+    border: '1px solid #CCCCCC',
     borderRadius: 8,
     padding: 8,
     width: '100%',
   },
   dateButton: {
-    backgroundColor: '#6200ee',
-    paddingVertical: 10,
+    backgroundColor: '#4CAF50',
+    paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
   },
   dateButtonText: {
-    color: '#fff',
+    color: '#FFFFFF',
     fontWeight: 'bold',
   },
   mapSection: {
     marginVertical: 20,
   },
   checkoutButton: {
-    backgroundColor: '#4caf50',
+    backgroundColor: '#03A9F4',
     paddingVertical: 15,
     borderRadius: 8,
     alignItems: 'center',
     marginBottom: 10,
   },
   checkoutButtonText: {
-    color: '#fff',
+    color: '#FFFFFF',
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 18,
   },
   backButton: {
     backgroundColor: '#757575',
@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   backButtonText: {
-    color: '#fff',
+    color: '#FFFFFF',
     fontWeight: 'bold',
     fontSize: 16,
   },
