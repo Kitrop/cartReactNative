@@ -14,8 +14,20 @@ export default function WishListScreen({ navigation }) {
         console.error('Failed to load wish list', error);
       }
     };
+
     loadWishList();
   }, []);
+
+  const removeFromWishList = async (id) => {
+    const updatedWishList = wishList.filter((item) => item.id !== id);
+    setWishList(updatedWishList);
+
+    try {
+      await AsyncStorage.setItem('wishList', JSON.stringify(updatedWishList));
+    } catch (error) {
+      console.error('Failed to save updated wish list', error);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -28,6 +40,12 @@ export default function WishListScreen({ navigation }) {
               <Text style={styles.name}>{item.name}</Text>
               <Text style={styles.description}>{item.description}</Text>
               <Text style={styles.price}>${item.price}</Text>
+              <TouchableOpacity
+                style={styles.removeButton}
+                onPress={() => removeFromWishList(item.id)}
+              >
+                <Text style={styles.removeButtonText}>Remove</Text>
+              </TouchableOpacity>
             </View>
           )}
         />
@@ -71,6 +89,18 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 14,
     color: '#4caf50',
+  },
+  removeButton: {
+    marginTop: 10,
+    backgroundColor: '#ff4081',
+    padding: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  removeButtonText: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: 'bold',
   },
   empty: {
     fontSize: 16,

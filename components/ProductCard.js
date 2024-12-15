@@ -24,6 +24,8 @@ export default function ProductCard({ product, addToCart, toggleFavorite }) {
 
 const styles = StyleSheet.create({
   card: {
+    width: 350,
+    height: 500,
     backgroundColor: '#fff',
     borderRadius: 20,
     marginBottom: 20,
@@ -35,8 +37,8 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   image: {
-    height: 200,
-    width: '100%',
+    height: 300,
+    width: 300,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },

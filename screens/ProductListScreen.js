@@ -6,9 +6,9 @@ import ProductCard from '../components/ProductCard';
 
 export default function ProductListScreen({ navigation }) {
   const [products] = useState([
-    { id: '1', name: 'Смартфон', description: 'Крутой телефон', price: 999, image: 'https://via.placeholder.com/150/0000FF' },
-    { id: '2', name: 'Ноутбук', description: 'Мощный ноутбук', price: 1999, image: 'https://via.placeholder.com/150/FF0000' },
-    { id: '3', name: 'Мышка', description: 'Просто мышка', price: 111, image: 'https://via.placeholder.com/150/EE3333' },
+    { id: '1', name: 'Смартфон', description: 'Крутой телефон', price: 999, image: 'https://i.imgur.com/GCU8drX.png' },
+    { id: '2', name: 'Ноутбук', description: 'Мощный ноутбук', price: 1999, image: 'https://i.imgur.com/AsqgGap.png' },
+    { id: '3', name: 'Мышка', description: 'Просто мышка', price: 111, image: 'https://i.imgur.com/BR5EyHG.png' },
   ]);
 
   const [shoppingCart, setShoppingCart] = useState([]);
@@ -55,14 +55,23 @@ export default function ProductListScreen({ navigation }) {
     });
   };
 
-  const toggleWishListItem = (product) => {
-    const isWishListItem = wishList.some((item) => item.id === product.id);
-    if (isWishListItem) {
-      setWishList((prevWishList) => prevWishList.filter((item) => item.id !== product.id));
+  const toggleWishListItem = async (product) => {
+    let updatedWishList;
+  
+    if (wishList.some((item) => item.id === product.id)) {
+      updatedWishList = wishList.filter((item) => item.id !== product.id);
     } else {
-      setWishList((prevWishList) => [...prevWishList, product]);
+      updatedWishList = [...wishList, product];
     }
-  };
+  
+    setWishList(updatedWishList);
+  
+    try {
+      await AsyncStorage.setItem('wishList', JSON.stringify(updatedWishList));
+    } catch (error) {
+      console.error('Failed to update wish list in storage', error);
+    }
+  }
 
   return (
     <View style={styles.container}>
