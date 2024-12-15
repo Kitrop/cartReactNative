@@ -66,6 +66,10 @@ export default function ShoppingCartScreen({ route, navigation }) {
     }
   };
 
+  const handleDateChange = (date) => {
+    setSelectedDate(new Date(date));
+  };
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -95,25 +99,35 @@ export default function ShoppingCartScreen({ route, navigation }) {
       <Text style={styles.total}>
         Total: ${getTotalPrice().toFixed(2)} {discount > 0 && `(Discount: ${discount * 100}%)`}
       </Text>
-
-      {/* Выбор даты */}
-      <View style={styles.dateSection}>
+            {/* Выбор даты */}
+            <View style={styles.dateSection}>
         <Text style={styles.label}>Select Delivery Date:</Text>
-        <Button
-          title={selectedDate.toLocaleDateString()}
-          onPress={() => setShowDatePicker(true)}
-          color="#6200ee"
-        />
-        {showDatePicker && (
-          <DateTimePicker
-            value={selectedDate}
-            mode="date"
-            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-            onChange={(event, date) => {
-              setShowDatePicker(false);
-              if (date) setSelectedDate(date);
-            }}
+        {Platform.OS === 'web' ? (
+          <input
+            type="date"
+            value={selectedDate.toISOString().split('T')[0]}
+            onChange={(e) => handleDateChange(e.target.value)}
+            style={styles.webDatePicker}
           />
+        ) : (
+          <>
+            <Button
+              title={selectedDate.toLocaleDateString()}
+              onPress={() => setShowDatePicker(true)}
+              color="#6200ee"
+            />
+            {showDatePicker && (
+              <DateTimePicker
+                value={selectedDate}
+                mode="date"
+                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                onChange={(event, date) => {
+                  setShowDatePicker(false);
+                  if (date) setSelectedDate(date);
+                }}
+              />
+            )}
+          </>
         )}
       </View>
 
@@ -199,6 +213,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 8,
     color: '#333',
+  },
+  webDatePicker: {
+    border: '1px solid #ccc',
+    borderRadius: 8,
+    padding: 8,
+    width: '100%',
   },
   mapSection: {
     marginVertical: 20,
